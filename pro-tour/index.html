@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" class="expert-off">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n="label.appTitle"></title>
+    <link rel="icon" type="image/png" href="/icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg" />
+    <link rel="shortcut icon" href="/assets/favicon-LQZvGMMh.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Pro Football Tour Planner" />    
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script type="module" crossorigin src="/assets/index-BqtDQmVh.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-39BuHyYj.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-shell-frame app-shell-header">
+        <div class="header-text">
+          <img src="icons/icon-512.svg" height="50" width="50">
+          <h1 data-i18n="label.appTitle"></h1>
+        </div>
+        <div class="app-menu" data-app-menu>
+          <button
+            id="app-menu-toggle"
+            class="btn btn-icon app-menu-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="app-menu-panel"
+            aria-label=""
+            title=""
+          >
+            <span class="app-menu-icon" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+          <div id="app-menu-panel" class="app-menu-panel" hidden>
+            <div class="app-menu-content">
+              <label class="menu-selector locale-selector ui-field app-menu-item">
+                <span data-i18n="label.language"></span>
+                <select
+                  id="locale-select"
+                  class="menu-select"
+                  data-menu-close-on-change="true"
+                  data-i18n="aria.languageSelector"
+                  data-i18n-attr="aria-label"
+                ></select>
+              </label>
+              <label class="menu-selector theme-selector ui-field app-menu-item">
+                <span data-i18n="label.theme"></span>
+                <select
+                  id="theme-select"
+                  class="menu-select"
+                  data-menu-close-on-change="true"
+                  data-i18n="aria.themeSelector"
+                  data-i18n-attr="aria-label"
+                ></select>
+              </label>
+              <button
+                id="favorites-button"
+                class="btn btn-text app-menu-action"
+                type="button"
+                data-menu-close="true"
+                data-i18n="dialog.favorites.title"
+              ></button>
+              <button
+                id="team-preferences-button"
+                type="button"
+                class="btn btn-text app-menu-action"
+                data-action="open-team-preferences"
+                data-menu-close="true"
+                data-i18n="dialog.teamPreferences.title"
+              ></button>
+              <button
+                id="city-preferences-button"
+                type="button"
+                class="btn btn-text app-menu-action"
+                data-action="open-city-preferences"
+                data-menu-close="true"
+                data-i18n="dialog.cityPreferences.title"
+              ></button>
+              <button
+                id="routing-parameters-button"
+                type="button"
+                class="btn btn-text app-menu-action"
+                data-action="open-routing-parameters"
+                data-menu-close="true"
+                data-i18n="dialog.routingParameters.title"
+              ></button>
+              <button
+                id="show-graph-button"
+                type="button"
+                class="btn btn-text app-menu-action"
+                data-action="open-graph"
+                data-menu-close="true"
+                data-i18n="dialog.routingGraph.title"
+              ></button>
+              <button
+                id="help-button"
+                type="button"
+                class="btn btn-text app-menu-action"
+                data-menu-close="true"
+                data-i18n="dialog.help.title"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="app-shell-main">
+        <section class="panel control-panel" data-panel="controls">
+          <div class="control-group ui-stack">
+            <label class="date-field ui-field">
+              <span data-i18n="label.tourStartDate"></span>
+              <input id="tour-start-date" type="date" />
+            </label>
+            <label class="date-field ui-field">
+              <span data-i18n="label.tourEndDate"></span>
+              <input id="tour-end-date" type="date" />
+            </label>
+            <label class="ui-field">
+              <span data-i18n="label.routing.maxTourLength"></span>
+              <select id="max-tour-length"></select>
+            </label>
+            <label class="ui-field">
+              <span data-i18n="label.routing.requiredStartDay"></span>
+              <select id="required-start-day"></select>
+            </label>
+            <label class="ui-field">
+              <span data-i18n="label.routing.allowFlights"></span>
+              <select id="allow-flights"></select>
+            </label>
+          </div>
+          <div class="control-group action-group ui-stack">
+            <button
+              id="search-button"
+              type="button"
+              class="btn btn-text btn-primary search-button"
+              data-action="toggle-search"
+              data-i18n="button.searchStart"
+              data-i18n-attr="aria-label"
+            ></button>
+          </div>
+        </section>
+        <section
+          id="routes-panel"
+          class="panel panel-routes routes-panel routes-panel-inactive"
+          aria-live="polite"
+          data-panel="routes"
+        >
+          <div class="routes-header">
+            <div>
+              <h2 id="routes-heading" data-i18n="label.routesHeading"></h2>
+            </div>
+          </div>
+          <div id="routes-progress" class="routes-progress" aria-live="polite"></div>
+          <section id="top-routes" class="routes-list" aria-live="polite">
+            <p class="empty-state" data-i18n="message.routesLoading"></p>
+          </section>
+        </section>
+        <section id="help-topics-panel" class="panel help-panel">
+          <div class="panel-header">
+            <h2 data-i18n="label.helpTopicsHeading"></h2>
+          </div>
+          <div id="help-topics-content" class="help-dialog-content"></div>
+        </section>
+      </main>
+      <footer class="app-shell-frame app-shell-footer">
+        <div class="footer-text" data-help-content-block="footer-marker"></div>
+      </footer>
+      <div id="modal-root" class="modal-root" aria-live="polite"></div>
+    </div>
+    <svg class="helmet-assets" aria-hidden="true" focusable="false" width="0" height="0">
+      <defs>
+        <filter id="helmet-glow">
+          <feGaussianBlur stdDeviation="18" result="blur" />
+          <feFlood flood-color="var(--helmet-stroke)" flood-opacity="1" result="color" />
+          <feComposite in="color" in2="blur" operator="in" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+    <template id="helmet-template">
+      <svg class="helmet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 540">
+        <path
+          class="helmet-outline"
+          filter="url(#helmet-glow)"
+          d="M227.8 46c-36.6.3-74.4 9.4-109 30.1-92.4 55.4-100.8 129-98.5 196C22.6 338.9 58.6 400 58.6 400s55.9-18.6 87.8 5c45.2 33 54.1 44.4 107 44.4 43.7 0 69.2-17.8 78.7-45.8h.1v-.3h.6q1.2.6 2.3.7l44.3 2.2c10.6 42.2 45 74.5 89.5 81.8l36.2 6q1.2.3 2.2.2a12.6 12.6 0 0 0 12.5-14.7l-24.2-132.2c-1-5.8-6.1-10.1-12.1-10.3l-89.7-3-11.5-80.4v-.7c29.7-10.9 55.9-9.6 55.9-9.6s0-8.5-1.8-21.7l.5-.2 21.5-6.7a12.5 12.5 0 0 0 8.3-15.8 13 13 0 0 0-16-8.1l-18.6 5.8-.6.2-.5-2.6a194 194 0 0 0-48.6-88.8C346.8 69.6 289 45.5 227.8 46m130.3 219.2.2.8 9.6 66.9L337 314c1.4-18.3 5.6-36 20.7-48.5v-.1zm-121.9 30.5h1l-2 5.8-11.2 31.9c-2 5.7.4 12 6 14.8l30 16.4 4 2.1a41.9 41.9 0 0 1-69.4-30.2 41 41 0 0 1 41.6-40.8m25.2 8.3a40 40 0 0 1 15.4 41.3l-4.4-2.4-20.7-11.3 7.7-21.9zm-111.7 17.5q4.6 0 8 3.3a11 11 0 0 1 0 15.6 11.4 11.4 0 0 1-16 0 11 11 0 0 1 0-15.6q3.6-3.3 8-3.3M336 342.8l.5.3 21.2 13q3 1.8 6.4 2l7.4.1 3.3 22.8-35.5-1.7-2.3-1.3-.6-.3q.1-17.4-.4-35m61.5 16.4 74.8 2.4 4.5 24.3-76-3.7zm-226.6 21q4.4 0 8 3.2a11 11 0 0 1 0 15.6 11.4 11.4 0 0 1-16 0 11 11 0 0 1 0-15.6q3.4-3.3 8-3.3M406 407.4l75.3 3.7 10 55-18.3-3a85 85 0 0 1-67-55.7"
+        />
+        <path
+          class="helmet-shell"
+          d="M227.8 46c61-.5 119 23.6 154.6 59.4a195 195 0 0 1 48.6 88.8l5.2 26.7h.1c1.9 13.6 1.9 22.4 1.9 22.4s-26.2-1.3-55.8 9.5l-24.6 12.6c-23 19-20.6 50.5-22 77.2h.2q.6 18.3.4 36.4c-.3 11.9-2.2 16.1-4.2 24.6h-.1c-9.5 28-35 45.8-78.7 45.8-52.9 0-61.8-11.5-107-44.5-32-23.5-87.8-5-87.8-5s-36-61-38.3-127.8c-2.3-67 6-140.6 98.5-196a214 214 0 0 1 109-30m8.4 249.7c-23 0-41.6 18.3-41.6 40.8a41 41 0 0 0 41.6 40.7c23 0 41.6-18.2 41.6-40.7a41 41 0 0 0-41.6-40.8m-86.5 25.8q-4.4 0-8 3.3a11 11 0 0 0 0 15.6 11.4 11.4 0 0 0 16 0 11 11 0 0 0 0-15.6 11 11 0 0 0-8-3.3m21.2 58.6q-4.6 0-8 3.3a11 11 0 0 0 0 15.6 11.4 11.4 0 0 0 16 0 11 11 0 0 0 0-15.6q-3.6-3.3-8-3.3"
+        />
+        <path
+          class="helmet-mask"
+          d="m224 333.4 11.2-32 7.8-22 1.5-4.3.1-.3 5.7-16.3c1.3-3.7 4.3-6.6 8.2-7.8l173.6-54.1 18.6-5.8a13 13 0 0 1 16 8.1 12.5 12.5 0 0 1-8.3 15.8l-21.5 6.7-56.6 17.7 2 14.5 11.5 80.4 89.6 3c6 .2 11.2 4.5 12.2 10.3l24.2 132.2c.7 4-.6 8.1-3.5 11a13 13 0 0 1-9 3.7l-2.2-.2-36.2-6c-44.4-7.3-79-39.6-89.5-81.8l-44.3-2.2q-1.2-.1-2.3-.6-1.7-.1-3.2-1L280.7 376 260 364.6l-30-16.4a12 12 0 0 1-6-14.8m249 129.8 18.3 3-10-55-75.3-3.7a85 85 0 0 0 67 55.7m-72.3-81 76 3.7-4.4-24.3-74.8-2.4zM272 274l65.2 40 30.8 19-9.6-66.9-2.8-19.2-83.3 26zm.5 69 20.5 11 44 23.9 2.3 1.3 35.5 1.7-3.3-22.8-7.4-.2q-3.4 0-6.4-1.9l-21.2-13-45.2-27.7-28-17.1-4 11.4-7.6 21.9z"
+        />
+        <circle
+          class="helmet-logo"
+          cx="-179.4"
+          cy="162.5"
+          r="67.6"
+          transform="scale(-1 1)"
+        />
+      </svg>
+    </template>
+  </body>
+</html>
