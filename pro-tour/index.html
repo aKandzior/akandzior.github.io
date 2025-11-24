@@ -3,15 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#478D3F" />
+    <meta property="og:title" content="Pro Football Tour Planner" />
+    <meta property="og:description" content="Pick cities and teams, then use the official schedule to plan the perfect trip." />
+    <meta property="og:image" content="icons/apple-touch-icon.png" />
     <title data-i18n="label.appTitle"></title>
-    <link rel="icon" type="image/png" href="/icons/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg" />
-    <link rel="shortcut icon" href="/assets/favicon-LQZvGMMh.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" href="icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="icons/icon-192.svg" />
+    <link rel="shortcut icon" href="/pro-tour/assets/favicon-LQZvGMMh.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Pro Football Tour Planner" />    
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CBamHJzV.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-39BuHyYj.css">
+    <link rel="manifest" href="/pro-tour/manifest.webmanifest" />
+    <script type="module" crossorigin src="/pro-tour/assets/index-S3Oo0as2.js"></script>
+    <link rel="stylesheet" crossorigin href="/pro-tour/assets/index-BQsloNET.css">
   </head>
   <body>
     <div class="app-shell">
@@ -113,11 +117,11 @@
           <div class="control-group ui-stack">
             <label class="date-field ui-field">
               <span data-i18n="label.tourStartDate"></span>
-              <input id="tour-start-date" type="date" />
+              <input id="tour-start-date" type="text" data-date-picker="true" />
             </label>
             <label class="date-field ui-field">
               <span data-i18n="label.tourEndDate"></span>
-              <input id="tour-end-date" type="date" />
+              <input id="tour-end-date" type="text" data-date-picker="true" />
             </label>
             <label class="ui-field">
               <span data-i18n="label.routing.maxTourLength"></span>
@@ -160,9 +164,6 @@
           </section>
         </section>
         <section id="help-topics-panel" class="panel help-panel">
-          <div class="panel-header">
-            <h2 data-i18n="label.helpTopicsHeading"></h2>
-          </div>
           <div id="help-topics-content" class="help-dialog-content"></div>
         </section>
       </main>
