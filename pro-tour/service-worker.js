@@ -1,5 +1,5 @@
 self.__PRO_TOUR_BASE_PATH__ = "/pro-tour/";
-self.__PRO_TOUR_APP_SHELL__ = ["/pro-tour/","/pro-tour/index.html","/pro-tour/manifest.webmanifest","/pro-tour/assets/favicon-LQZvGMMh.ico","/pro-tour/assets/index-B-crGSt8.js","/pro-tour/assets/index-CIOLsAf-.css","/pro-tour/assets/manifest-B3Iskn-m.webmanifest","/pro-tour/icons/apple-touch-icon.png","/pro-tour/icons/favicon-96x96.png","/pro-tour/icons/icon-192.svg","/pro-tour/icons/icon-512.svg"];
+self.__PRO_TOUR_APP_SHELL__ = ["/pro-tour/","/pro-tour/index.html","/pro-tour/manifest.webmanifest","/pro-tour/assets/favicon-LQZvGMMh.ico","/pro-tour/assets/index-ChNpnXeX.js","/pro-tour/assets/index-Cn4JhrXg.css","/pro-tour/assets/manifest-B3Iskn-m.webmanifest","/pro-tour/icons/apple-touch-icon.png","/pro-tour/icons/favicon-96x96.png","/pro-tour/icons/icon-192.svg","/pro-tour/icons/icon-512.svg"];
 export const APP_VERSION = "1.0";
 const APP_SHELL_CACHE = `pro-tour-shell-${APP_VERSION}`;
 const DATA_CACHE = `pro-tour-data-${APP_VERSION}`;
