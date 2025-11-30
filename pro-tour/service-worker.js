@@ -1,122 +1,48 @@
-self.__PRO_TOUR_BASE_PATH__ = "/pro-tour/";
-self.__PRO_TOUR_APP_SHELL__ = ["/pro-tour/","/pro-tour/index.html","/pro-tour/manifest.webmanifest","/pro-tour/assets/favicon-LQZvGMMh.ico","/pro-tour/assets/index-ChNpnXeX.js","/pro-tour/assets/index-Cn4JhrXg.css","/pro-tour/assets/manifest-B3Iskn-m.webmanifest","/pro-tour/icons/apple-touch-icon.png","/pro-tour/icons/favicon-96x96.png","/pro-tour/icons/icon-192.svg","/pro-tour/icons/icon-512.svg"];
-export const APP_VERSION = "1.0";
-const APP_SHELL_CACHE = `pro-tour-shell-${APP_VERSION}`;
-const DATA_CACHE = `pro-tour-data-${APP_VERSION}`;
-const BASE_PATH = normalizeBasePath(self.__PRO_TOUR_BASE_PATH__ ?? "/");
-const DEV_APP_SHELL_ASSETS = buildDevAppShellAssets(BASE_PATH);
-const APP_SHELL_ASSETS = self.__PRO_TOUR_APP_SHELL__ ?? DEV_APP_SHELL_ASSETS;
-const APP_SHELL_ASSET_SET = new Set(APP_SHELL_ASSETS);
-const SCHEDULE_PATHNAME = resolveToBasePath(BASE_PATH, "data/pro-tour-schedule.js");
+importScripts("/pro-tour/notice-content.js");
 
-const isServiceWorkerContext = typeof self !== "undefined" && typeof self.skipWaiting === "function";
+self.addEventListener("install", (event) => {
+  event.waitUntil(clearCaches().then(() => self.skipWaiting()));
+});
 
-if (isServiceWorkerContext) {
-  self.addEventListener("install", (event) => {
-    event.waitUntil(
-      (async () => {
-        const cache = await caches.open(APP_SHELL_CACHE);
-        await cache.addAll(APP_SHELL_ASSETS);
-        self.skipWaiting();
-      })()
-    );
-  });
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    (async () => {
+      await clearCaches();
+      await self.clients.claim();
+    })()
+  );
+});
 
-  self.addEventListener("activate", (event) => {
-    event.waitUntil(
-      (async () => {
-        const cacheKeys = await caches.keys();
-        await Promise.all(
-          cacheKeys.map((cacheName) => {
-            if (cacheName === APP_SHELL_CACHE || cacheName === DATA_CACHE) {
-              return Promise.resolve();
-            }
-            if (!cacheName.startsWith("pro-tour-shell-") && !cacheName.startsWith("pro-tour-data-")) {
-              return Promise.resolve();
-            }
-            return caches.delete(cacheName);
-          })
-        );
-        await self.clients.claim();
-      })()
-    );
-  });
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
 
-  self.addEventListener("fetch", (event) => {
-    const { request } = event;
-    if (request.method !== "GET") {
-      return;
-    }
-    const url = new URL(request.url);
-    if (url.origin !== self.location.origin) {
-      return;
-    }
-    if (isScheduleRequest(url)) {
-      event.respondWith(networkFirstSchedule(request));
-      return;
-    }
-    if (request.mode === "navigate" || APP_SHELL_ASSET_SET.has(url.pathname)) {
-      event.respondWith(cacheFirst(request));
-    }
+  if (request.method !== "GET") {
+    return;
+  }
+
+  const url = new URL(request.url);
+  const isProTour = url.origin === self.location.origin && url.pathname.startsWith("/pro-tour/");
+
+  if (request.mode === "navigate" && isProTour) {
+    event.respondWith(renderNotice());
+    return;
+  }
+
+  if (isProTour) {
+    event.respondWith(fetch(request, { cache: "no-store" }));
+  }
+});
+
+function renderNotice() {
+  return new Response(self.NOTICE_HTML || "", {
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "no-store",
+    },
   });
 }
 
-function isScheduleRequest(url) {
-  return url.pathname === SCHEDULE_PATHNAME;
-}
-
-async function cacheFirst(request) {
-  const cache = await caches.open(APP_SHELL_CACHE);
-  const cachedResponse = await cache.match(request);
-  if (cachedResponse) {
-    return cachedResponse;
-  }
-  const networkResponse = await fetch(request);
-  if (networkResponse && networkResponse.ok) {
-    cache.put(request, networkResponse.clone());
-  }
-  return networkResponse;
-}
-
-async function networkFirstSchedule(request) {
-  const cache = await caches.open(DATA_CACHE);
-  try {
-    const networkResponse = await fetch(request);
-    if (networkResponse && networkResponse.ok) {
-      await cache.put(request, networkResponse.clone());
-    }
-    return networkResponse;
-  } catch (error) {
-    const cachedResponse = await cache.match(request);
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-    throw error;
-  }
-}
-
-function buildDevAppShellAssets(basePath) {
-  return [
-    resolveToBasePath(basePath, ""),
-    resolveToBasePath(basePath, "index.html"),
-    resolveToBasePath(basePath, "style.css"),
-    resolveToBasePath(basePath, "main.js"),
-    resolveToBasePath(basePath, "manifest.webmanifest"),
-    resolveToBasePath(basePath, "icons/icon-192.svg"),
-    resolveToBasePath(basePath, "icons/icon-512.svg"),
-  ];
-}
-
-function resolveToBasePath(basePath, relativePath) {
-  const normalized = typeof relativePath === "string" ? relativePath : "";
-  const withoutLeadingSlash = normalized.startsWith("/") ? normalized.slice(1) : normalized;
-  return new URL(withoutLeadingSlash, new URL(basePath, self.location.origin)).pathname;
-}
-
-function normalizeBasePath(basePath) {
-  if (!basePath) {
-    return "/";
-  }
-  const withLeadingSlash = basePath.startsWith("/") ? basePath : `/${basePath}`;
-  return withLeadingSlash.endsWith("/") ? withLeadingSlash : `${withLeadingSlash}/`;
+async function clearCaches() {
+  const keys = await caches.keys();
+  await Promise.all(keys.map((key) => caches.delete(key)));
 }

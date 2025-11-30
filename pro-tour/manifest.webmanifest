@@ -1,9 +1,9 @@
 {
   "name": "Pro Football Tour Planner",
   "short_name": "Pro Tour",
-  "description": "Plan a tour along the pro football schedule with city filters and favorite teams.",
-  "start_url": ".",
-  "scope": ".",
+  "description": "Die Pro-Tour App findest du jetzt unter https://pro-tour.oldnerd.de.",
+  "start_url": "https://pro-tour.oldnerd.de/",
+  "scope": "https://pro-tour.oldnerd.de/",
   "display": "standalone",
   "background_color": "#478D3F",
   "theme_color": "#ffffff",
