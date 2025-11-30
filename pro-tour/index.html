@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <title>Pro-Tour App ist umgezogen</title>
-    <script src="./notice-content.js"></script>
+    <script src="/pro-tour/notice-content.js"></script>
   </head>
   <body>
     <script>
@@ -15,10 +15,24 @@
 
       (function register() {
         if ("serviceWorker" in navigator) {
-          navigator.serviceWorker
-            .register("/pro-tour/service-worker.js", { scope: "/pro-tour/" })
-            .then((registration) => registration.update?.())
-            .catch(() => {});
+          (async () => {
+            try {
+              const registrations = await navigator.serviceWorker.getRegistrations();
+              await Promise.all(registrations.map((reg) => reg.unregister()));
+
+              const registration = await navigator.serviceWorker.register("/pro-tour/service-worker.js?v=2", {
+                scope: "/pro-tour/",
+              });
+              registration.update?.();
+
+              navigator.serviceWorker.ready.then((reg) => {
+                reg.active?.postMessage("clear-caches");
+                reg.active?.postMessage("skip-waiting");
+              });
+            } catch (error) {
+              console.error("SW registration error", error);
+            }
+          })();
         }
         if ("caches" in window) {
           caches.keys().then((keys) => keys.forEach((key) => caches.delete(key)));

@@ -33,6 +33,15 @@ self.addEventListener("fetch", (event) => {
   }
 });
 
+self.addEventListener("message", (event) => {
+  if (event.data === "clear-caches") {
+    event.waitUntil(clearCaches());
+  }
+  if (event.data === "skip-waiting") {
+    self.skipWaiting();
+  }
+});
+
 function renderNotice() {
   return new Response(self.NOTICE_HTML || "", {
     headers: {
