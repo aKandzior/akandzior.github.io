@@ -17,18 +17,7 @@
         if ("serviceWorker" in navigator) {
           (async () => {
             try {
-              const registrations = await navigator.serviceWorker.getRegistrations();
-              await Promise.all(registrations.map((reg) => reg.unregister()));
-
-              const registration = await navigator.serviceWorker.register("/pro-tour/service-worker.js?v=2", {
-                scope: "/pro-tour/",
-              });
-              registration.update?.();
-
-              navigator.serviceWorker.ready.then((reg) => {
-                reg.active?.postMessage("clear-caches");
-                reg.active?.postMessage("skip-waiting");
-              });
+              await navigator.serviceWorker.register("/pro-tour/service-worker.js", { scope: "/pro-tour/" });
             } catch (error) {
               console.error("SW registration error", error);
             }
